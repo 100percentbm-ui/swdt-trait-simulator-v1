@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Droid Trait Machine</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,500;0,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{--cy:#19e1ff;--or1:#ffb92e;--or2:#ff8c00;--ink:#16110a;--gr:#7d8187;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100vh;color:#fff;font:500 15px/1.3 "Exo 2","Segoe UI",system-ui,sans-serif;background:linear-gradient(#0c1442 0,#3a2358 24%,#d79a62 40%,#7d4b30 100%) fixed;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(90deg,#b8283a55 0 6vw,#2fa85555 6vw 12vw,#2c5fc255 12vw 18vw) top/100% 16vh no-repeat,radial-gradient(ellipse 60% 22% at 50% 88%,#000b,#0000);pointer-events:none}
+body.dim::after{content:"";position:fixed;inset:0;background:linear-gradient(#0007,#000d);pointer-events:none}
+.it{font-family:"Exo 2","Arial Black",Impact,sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.01em}
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 12px 24px;gap:14px}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+.or,.gr{font:italic 900 clamp(16px,2.4vw,26px)/1 "Exo 2",sans-serif;text-transform:uppercase;padding:.55em 1em;border-radius:3px;min-width:180px;display:inline-flex;gap:.5em;align-items:center;justify-content:center;border:1px solid #fff5}
+.or{background:linear-gradient(var(--or1),var(--or2));color:var(--ink)}
+.or:hover,.or:focus-visible{background:linear-gradient(#fff04a,#ffd51a);outline:0}
+.gr{background:linear-gradient(#868a91,#6c7076)}.gr:hover,.gr:focus-visible{background:linear-gradient(#a0a4ab,#868a91);outline:0}
+kbd{font:700 11px sans-serif;border:1px solid #fffc;border-radius:3px;padding:1px 5px;background:#14181eb0;color:#fff}
+.tb{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:10px;z-index:5;display:flex;gap:6px;flex-wrap:wrap}
+.tb button{background:#062850cc;border:1.5px solid #19e1ff99;border-radius:3px;padding:6px 11px;font-weight:700;font-size:12px;color:#c4f6ff}
+.tb button:hover{border-color:var(--cy);background:#06386f}
+/* badge */
+.bd{--s:86px;font-size:var(--s);width:1em;height:.84em;clip-path:polygon(8% 0,92% 0,100% 18%,50% 100%,0 18%);background:linear-gradient(#b9bec6,#6f757e);color:#101114;display:grid;place-items:start center;flex:none}
+.bd svg{width:.5em;height:.5em;margin-top:.08em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.bd .q{font:900 .55em/1 "Exo 2",sans-serif;margin-top:.1em}
+.bd.mint{background:linear-gradient(#5cf2c4,#22c99a);--bg:#5cf2c4}.bd.gold{background:linear-gradient(#ffe066,#f2b705);--bg:#ffe066}.bd.dia{background:linear-gradient(#8be9ff,#38bdf8);--bg:#8be9ff}
+.bd.rb{background:linear-gradient(135deg,#ff4d6d,#ffb84d,#f6e05e,#4ade80,#38bdf8,#a78bfa);--bg:#ddd}
+.bd.pop{animation:pop .4s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{from{transform:scale(.55)}}
+/* panel */
+.tw{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center;width:100%;max-width:1100px}
+.panel{container-type:inline-size;position:relative;width:min(92vw,560px);aspect-ratio:740/640;background:var(--cy);clip-path:polygon(7% 0,93% 0,100% 11.5%,57% 100%,43% 100%,0 11.5%);filter:drop-shadow(0 0 14px #19e1ff88)}
+.panel::before{content:"";position:absolute;inset:3px;clip-path:inherit;background:radial-gradient(ellipse at 50% 0,#8fe3ff77,#0000 40%),repeating-linear-gradient(#78c8ff18 0 1px,#0000 1px 4px),#05264fdd}
+.pin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding-top:7cqw}.pin .port{width:21cqw}
+.port{width:clamp(80px,21%,118px);aspect-ratio:1;border:4px solid var(--cy);border-radius:7px;overflow:hidden;background:#1b0f55}
+.port svg{width:100%;height:100%;display:block}
+.pin h2{margin:.2em 0 0;color:var(--cy);text-align:center;line-height:.9;font-size:15cqw;text-shadow:0 3px 0 #0008}.pin h2 small{display:block;font-size:.58em}
+.pin .tn{color:var(--cy);font-size:3.6cqw;line-height:1.05;margin-top:1.2cqw;max-width:44cqw;text-align:center;text-wrap:balance}.pin .te{font-size:2.8cqw;font-weight:700;max-width:46cqw;text-align:center}
+.bw{margin-top:auto;margin-bottom:3cqw}.bw .bd{font-size:23cqw}
+.side{width:min(92vw,330px);padding:16px;background:#041e44ee;border:2.5px solid var(--cy);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);display:grid;gap:8px}
+.side .or,.side .gr{width:100%}.lock{justify-self:center;background:none;color:#dfe9f2;font-weight:700;font-size:13px;display:grid;justify-items:center;gap:3px}
+.lock svg{width:34px;height:34px;stroke:var(--cy);fill:none;stroke-width:2.4}.lock.on svg rect{fill:var(--cy)}
+/* select */
+h1{margin:0;font-size:clamp(34px,7vw,56px);text-shadow:0 3px 0 #0009;text-align:center}
+.cards{display:flex;flex-wrap:wrap;gap:18px 22px;justify-content:center;max-width:980px}
+.card{width:150px;position:relative}.card .port{width:150px;border-radius:8px;position:relative}
+.card .nm{font-size:24px;line-height:1.05;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .mt{display:flex;gap:6px;align-items:center;font-size:11px;font-weight:800;margin-bottom:6px;color:#b79bff;text-transform:uppercase}
+.pill{border-radius:8px;padding:0 7px;color:#06223f;font-weight:900}
+.card .or{min-width:0;width:100%;font-size:20px}
+.add{width:150px;aspect-ratio:1;border:3px dashed var(--cy);border-radius:8px;background:#082a54aa;display:grid;place-items:center;font:700 80px/1 sans-serif;color:var(--cy)}
+.rm{position:absolute;left:4px;top:122px;width:24px;height:24px;border-radius:50%;background:#c8283c99;font-size:17px;line-height:1;padding:0}.rm:hover{background:#c8283c}
+.mini{position:absolute;right:4px;top:4px;--s:30px}
+.home{display:grid;justify-items:center;gap:20px}
+.mach{width:min(78vw,300px);aspect-ratio:1/1.05;border-radius:14px;background:linear-gradient(#e9eef2,#aab4bc);border-top:24px solid var(--cy);padding:22px 20px 40px;box-shadow:0 20px 40px #0008}
+.scr{height:100%;background:linear-gradient(#25ddff22 1px,#0000 1px) 0 0/100% 27px,linear-gradient(90deg,#25ddff22 1px,#0000 1px) 0 0/25px 100%,#05080d;border:6px solid #3a4650;border-radius:8px;display:grid;place-items:center;--s:110px;color:#19e1ff}
+.scr .q{font:900 46px sans-serif;color:#19e1ff55}
+.hud{display:flex;align-items:center;gap:10px;font-size:clamp(34px,8vw,52px)}.hud small{display:block;font-size:13px;font-weight:700;color:#ffe9a8}
+.hud svg{width:56px;height:56px;flex:none}
+/* guide */
+.gd{display:flex;flex-wrap:wrap;justify-content:center;gap:22px 14px;max-width:900px;width:100%}.gd>div{width:200px}
+.gd>div{display:grid;justify-items:center;text-align:center;gap:3px}.gd .bd{--s:78px}.gd b{font-size:clamp(13px,2.5vw,19px);line-height:1.1}.gd span{font-size:13px;max-width:200px}
+.pg{display:flex;gap:18px;align-items:center;font-size:24px}
+.pg button{width:56px;height:56px;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);background:var(--cy);color:#07213f;font-size:22px}
+.gh{border-bottom:3px solid var(--cy);padding:0 22px 4px}
+/* banner, toast, dialog */
+#bn{position:fixed;top:calc(52px + env(safe-area-inset-top,0px));left:0;right:0;z-index:9;display:flex;flex-direction:column;align-items:center;pointer-events:none;opacity:0;transition:opacity .4s}
+#bn.show{opacity:1}#bn .t{display:flex;align-items:center;gap:12px;font-size:clamp(28px,6vw,44px);text-shadow:0 3px 0 #000a}#bn .bd{--s:48px}
+#bn .s{font-size:clamp(14px,3vw,22px);color:#e6edf2;text-shadow:0 2px 0 #000a}
+.t.Default{color:#34e3b0}.t.Gold{color:#f6d34d}.t.Diamond{color:#42dff5}.t.Rainbow span,.t.rb span{background:linear-gradient(90deg,#ff4d6d,#ffb84d,#f6e05e,#4ade80,#38bdf8,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+#ts{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:9;background:#041836f2;border:1.5px solid var(--cy);border-radius:4px;padding:10px 18px;max-width:92vw;text-align:center;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none}#ts.show{opacity:1}
+dialog{background:#06142e;color:#e8f6ff;border:2px solid var(--cy);border-radius:4px;padding:18px;width:min(94vw,640px);max-height:88vh}dialog::backdrop{background:#000b}
+dialog h3{margin:0 0 10px;color:var(--cy)}dialog label{display:grid;gap:3px;font-size:13px;margin:8px 0}
+input,select{font:inherit;background:#0a2147;color:#fff;border:1px solid var(--cy);padding:7px;border-radius:2px;width:100%}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}.row .or,.row .gr{min-width:0;font-size:16px}
+.ptab{display:grid;grid-template-columns:auto repeat(var(--n),minmax(70px,1fr));gap:4px;overflow-x:auto;align-items:center;font-size:12px}.ptab b{color:var(--cy)}
+.sfx{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.sfx button{background:#0a2147;border:1px solid var(--cy);color:#8fe9ff;padding:3px 9px;font-size:12px}
+ul.h{max-height:240px;overflow:auto;padding-left:18px;margin:6px 0}
+.dd{max-height:210px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;border:1px solid var(--cy);background:#0a2147;margin-top:2px}
+.dd button{display:block;width:100%;text-align:left;background:none;padding:9px 10px;font-weight:800;border-bottom:1px solid #19e1ff22}.dd button:hover,.dd button:focus-visible{background:#19e1ff;color:#06223f!important;outline:0}.dd small{opacity:.8;font-weight:500}
+@media (prefers-reduced-motion:reduce){.bd.pop{animation:none}}
+</style></head>
+<body>
+<div class="tb"><button data-a="prices">PRICES</button><button data-a="settings">SETTINGS</button><button data-a="until">ROLL UNTIL</button><button data-a="stats">STATS</button></div>
+<div id="app"></div><div id="bn"></div><div id="ts"></div><dialog id="dlg"></dialog><datalist id="cat"></datalist>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LV=['Default','Gold','Diamond','Rainbow'],RAR=['Common','Rare','Epic','Legendary','Mythic','Iconic'],LC={Default:'mint',Gold:'gold',Diamond:'dia',Rainbow:'rb'};
+const RC={Common:'#9aa4b2',Rare:'#25b4ff',Epic:'#b455ff',Legendary:'#ffb020',Mythic:'#ff3b6b',Iconic:'#ffd84a'};
+const T=[['credit-per-second','Credit Per Second Multiplier','s',10,50,'%','Credits Per Second'],['pickaxe-level','Pickaxe Level','s',2,10,'','Pickaxe Level'],['health','Health','s',50,250,'','Max Health'],['crafting-speed','Crafting Speed','s',5,25,'%','Crafting Speed'],['critical-chance','Critical Chance','s',5,25,'%','Critical Chance'],['critical-amount','Critical Amount','s',10,50,'%','Critical Amount'],['upgrade-chip-bonus','Upgrade Chip Bonus','s',20,100,'%','Upgrade Chips'],['scrap-specialist','Scrap Specialist','s',10,50,'%','Credits from Scrap Stations'],['fusion-expert','Fusion Expert','s',20,100,'%','Pickaxe Amount on Fusions'],['mission-efficiency','Mission Efficiency','s',5,25,'%','Astromech Mission Speed'],['offline-earnings','Offline Earnings','s',2,10,'%','Total Offline Earnings'],['passive-credits','Passive Credits','r',0,0,'','25% Credits/5sec as Companion'],['overclocked','Overclocked','r',0,0,'','Doubles Companion Bonus'],['chip-finder','Chip Finder','r',0,0,'','100% Upgrade Chips when Building Droids'],['fusion-preservation','Fusion Preservation','r',0,0,'','Droid kept if used in fusion, then trait locks'],['golden-splash-refill','Golden Splash Refill','r',0,0,'','Gives Gold Splash / 2min While Hitting Depot']].map(([id,name,k,min,max,unit,effect])=>({id,name,rb:k=='r',min,max,unit,effect}));
+const TB=Object.fromEntries(T.map(t=>[t.id,t]));
+const IC={'credit-per-second':'<circle cx="12" cy="12" r="8"/><path d="M13.5 7 10 12.5h4l-3.5 5"/>','pickaxe-level':'<path d="M5 20l8-8M7 8Q13 2 20 7M13 12l6-6"/>','health':'<path fill="currentColor" stroke="none" d="M12 21C5 15.5 2.5 11 5 7c2-3 5.500-2 7 1 1.500-3 5-4 7-1 2.500 4 0 8.500-7 14z"/><path stroke="var(--bg,#9aa0a8)" stroke-width="2.4" d="M12 10v6M9 13h6"/>','crafting-speed':'<path d="M12 21V10"/><path fill="currentColor" d="M5 4h14v5H5z"/><path d="M3 14l2 1M21 14l-2 1M7 19l1-2"/>','critical-chance':'<path fill="currentColor" stroke="none" d="M12 2l2 7 7-1-5 5 4 7-8-4-8 4 4-7-5-5 7 1z"/>','critical-amount':'<path d="M5 19L19 5M11 5h8v8M5 12l7 7M4 8l4-4"/>','upgrade-chip-bonus':'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3M10 12l2-2 2 2M10 15l2-2 2 2"/>','scrap-specialist':'<path d="M20 12A8 8 0 0 0 6.300 6.300M4 4v5h5M4 12a8 8 0 0 0 13.700 5.700M20 20v-5h-5"/>','fusion-expert':'<circle cx="12" cy="6" r="2.400"/><circle cx="6" cy="17" r="2.400"/><circle cx="18" cy="17" r="2.400"/><path d="M12 8.400V13M8 16l4-3 4 3"/>','mission-efficiency':'<path d="M12 3c4 3 5 8 3 13H9C7 11 8 6 12 3zM9 16l-3 4M15 16l3 4"/><circle cx="12" cy="10" r="1.600"/>','offline-earnings':'<path d="M3 9Q12 2 21 9M6 13q6-5 12 0M3 3l18 18"/>','passive-credits':'<circle cx="8" cy="9" r="5"/><circle cx="17" cy="8" r="2" fill="currentColor"/><path d="M14 21v-8h6v8"/>','overclocked':'<path fill="currentColor" stroke="none" d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 3-6 1 2 2 2 2 0 0-2 0-4 1-6z"/>','chip-finder':'<rect x="5" y="7" width="11" height="11" rx="2"/><path d="M8 4v3M13 4v3M8 18v3M13 18v3M2 10h3M2 15h3M15 6l6 6"/>','fusion-preservation':'<circle cx="12" cy="6" r="2.400"/><circle cx="6" cy="17" r="2.400"/><circle cx="18" cy="17" r="2.400"/><circle cx="12" cy="13" r="1.400" fill="currentColor"/><path d="M12 8.400v3.200M8 16l3-2M16 16l-3-2"/>','golden-splash-refill':'<rect x="4" y="8" width="5" height="12" rx="2" fill="currentColor"/><rect x="9.500" y="5" width="5" height="15" rx="2" fill="currentColor"/><rect x="15" y="8" width="5" height="12" rx="2" fill="currentColor"/>'};
+const RAW=`Common: Mouse|Pit|Gonk|CB|R3|R5|R8|Imperial Probe|B1 Battle|DRK-1 Probe|ID10
+Rare: BDX Explorer|ARG|Senate Hovercam|BU-4D|Bal-Core|Roll-R|2BB|A-LT|R4|R9|B1 Security|NAV-EX|Vect-Arm|HOV-R|EG-58|SA-5|WHL-EX*Fusion, Worker: ARG + MOUSE x2|BTL-R*Fusion, Battle: R9 + BDX + B1 BATTLE|ZRO-TEC*Fusion, Astro: ID10 x2 + 2BB
+Epic: Groundmech|L0|AMP Walker|Sen-Tri|Opti-Pod|Gunrunner|BB|R2|R6|Trak-R|Orb-Walker|Util-Tec|B1 Heavy|B2 Super|B2 Heavy|Strike-Orb|Haul-R|LNG-Shot|MPH|EGL|KT|Lom|N-UL*Fusion, Worker: B1 HEAVY + GUNRUNNER + BB|SCRP-R*Fusion, Astro: GONK + GROUNDMECH + R6|ARM-CORE*Fusion, Battle: ARG x2 + B2 HEAVY|OPT-AR*Fusion, Battle: R2 x2 + B2 SUPER
+Legendary: Proto-Roller|Mecha-Droid|Mono-Walker|BB9|R7|B2-RP|Cyclo-Grav|Opti-Strike|J09-4MN|PLNK|PZ|RO-TOR*Fusion, Worker: BB9 + PIT + B1 BATTLE|FUS-3*Fusion, Worker: R7 + B-U4D x2|ORB-XL*Fusion, Battle: CB + GUNRUNNER + B2-RP|QIK-BIT*Fusion, Astro: GROUNDMECH x2 + BB9
+Mythic: Snow Mouse|RIC|RIC-1200|LEP|Loadlifter|DRFT-R|MO-TRAK|TRI-TEK|CYCLENS|KX|IG|ECG|TDA|RIV-3T*Fusion, Worker: KX + IG + RIC|LUG-G*Fusion, Worker: LOADLIFTER + ID10 + R5|X-ONK*Fusion, Battle: KX x2 + GONK|SRV-0*Fusion, Battle: RIC-1200 + B1 HEAVY x2|AXI-POD*Fusion, Astro: RIC + BDX + R7|LOW-MO*Fusion, Astro: A-LT x2 + LOADLIFTER
+Iconic: BB-8|MISTER BONES|IG-11|DJ R-3X|CB-23|C-3PO|R2-D2|Chopper|D-O|WG-22|Scourge Prime`;
+const CAT=RAW.split('\n').flatMap(l=>{const[r,n]=l.split(': ');return n.split('|').map(x=>{const[a,b]=x.split('*');return{n:a,r,note:b||''}})});
+const lab=e=>`${e.n}  ·  ${e.r}${e.note?'  ·  Fusion':''}`,nz=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+$('#cat').innerHTML=CAT.map(e=>`<option value="${esc(lab(e))}">`).join('');
+const DEF={rb:5,lc:{Default:50,Gold:30,Diamond:15,Rainbow:5},rs:100/3,rg:25,vars:['Default','Gold','Diamond','Rainbow','Beskar','Galactic','Stellar','Kyber'],mis:false};
+let S={};try{S=JSON.parse(localStorage.getItem('dtm1'))||{}}catch(e){}
+S.set={...DEF,...S.set,lc:{...DEF.lc,...(S.set||{}).lc}};if(JSON.stringify(S.set.vars)=='["Standard","Golden","Rainbow","Stellar","Galactic"]')S.set.vars=DEF.vars;S.prices=S.prices||{'Common|Galactic':'9.6M','Rare|Stellar':'7.2M','Rare|Galactic':'7.8M'};S.d=S.d||[];S.sel=S.sel||'';
+const save=()=>{try{localStorage.setItem('dtm1',JSON.stringify(S))}catch(e){}};
+const rnd=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32,sel=()=>S.d.find(d=>d.id==S.sel);
+const fmt=n=>(+n.toFixed(2)).toLocaleString('en-US',{maximumFractionDigits:2});
+const U=[[1e18,'Qi'],[1e15,'Qa'],[1e12,'T'],[1e9,'B'],[1e6,'M'],[1e3,'K']];
+const fc=(v,fx)=>{for(const[u,s]of U)if(Math.abs(v)>=u){const x=Math.floor(v/u*100+1e-9)/100;return(fx?x.toFixed(2):fmt(x))+s}return fmt(v)};
+const pc=t=>{const m=String(t||'').trim().toLowerCase().replace(/,/g,'').match(/^(\d+(?:\.\d+)?)\s*(k|m|b|t|qa|qi|q)?$/);return m?Math.round(+m[1]*({k:1e3,m:1e6,b:1e9,t:1e12,q:1e15,qa:1e15,qi:1e18}[m[2]]||1)):null};
+const act=()=>T.filter(t=>S.set.mis||t.id!='mission-efficiency');
+const chance=t=>{const a=act(),rb=Math.min(100,Math.max(0,+S.set.rb||0));return t.rb?rb/a.filter(x=>x.rb).length:(100-rb)/a.filter(x=>!x.rb).length};
+const shares=()=>{const r=LV.map(l=>Math.max(0,+S.set.lc[l]||0)),s=r.reduce((a,b)=>a+b,0);return Object.fromEntries(LV.map((l,i)=>[l,s?r[i]/s:.25]))};
+const lvv=(t,l)=>l=='Default'?t.min:l=='Gold'?t.min*2:l=='Diamond'?t.min*3:t.max;
+function roll(){let p=rnd()*100;const a=act();for(const t of a){p-=chance(t);if(p<0){if(t.rb)return{t:t.id};let q=rnd(),l='Default';for(const[k,v]of Object.entries(shares())){q-=v;if(q<0){l=k;break}}return{t:t.id,l,v:lvv(t,l)}}}const z=a.filter(x=>!x.rb).pop();return{t:z.id,l:'Rainbow',v:z.max}}
+const expect=(t,min='Default')=>{const c=chance(t)/100,sh=t.rb?1:LV.slice(LV.indexOf(min)).reduce((s,l)=>s+shares()[l],0);return c*sh>0?1/(c*sh):Infinity};
+const first=d=>{const o=(d.fp||'').trim()?pc(d.fp):null;return o??pc(S.prices[`${d.rar}|${d.v}`])};
+const price=(d,i)=>{const f=first(d);if(f==null)return null;return i?Math.min(1e21,Math.round(f*S.set.rs/100*(1+S.set.rg/100)**(i-1))):f};
+const cost=(d,s,n)=>{let t=0;for(let i=0;i<n&&t<1e21;i++)t+=price(d,s+i)||0;return Math.min(1e21,t)};
+const desc=r=>{const t=TB[r.t];return t.rb?t.effect:`+${fmt(r.v)}${t.unit} ${t.effect}`};
+const rng=t=>t.rb?t.effect:`+${t.min}${t.unit}-${t.max}${t.unit} ${t.effect}`;
+function apply(d,rs){const n=new Date().toISOString();d.spent=Math.min(1e21,d.spent+cost(d,d.rolls,rs.length));d.rolls+=rs.length;d.trait=rs[rs.length-1];d.hist=[...rs.slice(-25).reverse().map(r=>({...r,at:n})),...d.hist].slice(0,25);save()}
+const badge=(id,l,o={})=>{const t=TB[id],c=t&&t.rb?'rb':l?LC[l]:'';return`<div class="bd ${c} ${o.cls||''}" ${o.st?`style="${o.st}"`:''}>${o.q?'<span class="q">?</span>':`<svg viewBox="0 0 24 24">${IC[id]||''}</svg>`}</div>`};
+const bOf=(r,o)=>badge(r.t,TB[r.t].rb?null:r.l,o);
+const robot=d=>{if(d.img)return`<img src="${d.img}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`;const h=[...d.name].reduce((a,c)=>a+c.charCodeAt(0),0)*37%360,b=`hsl(${h} 90% 62%)`,k=`hsl(${h} 90% 32%)`;return`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#1b0f55"/><rect x="24" y="52" width="14" height="28" rx="4" fill="${k}"/><rect x="62" y="52" width="14" height="28" rx="4" fill="${k}"/><rect x="30" y="48" width="40" height="42" rx="6" fill="${b}"/><rect x="34" y="16" width="32" height="30" rx="6" fill="${b}"/><rect x="40" y="25" width="20" height="9" rx="2" fill="#ffb020"/><rect x="34" y="66" width="32" height="5" fill="${k}"/></svg>`};
+const coin='<svg viewBox="0 0 24 24"><path d="M12 1.500l9 5.200v10.600L12 22.500 3 17.300V6.700z" fill="#f0b020" stroke="#7a4a05" stroke-width="1.500"/><path d="M13 6.500l-3.500 5.500H14l-3.500 5.500" fill="none" stroke="#5a3600" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+let scr='home',gp=0,rolling=false,shown=null,gret='trait',bt,tt;
+const go=s=>{if(rolling)return;scr=s;render()};
+const back=()=>go(scr=='guide'?gret:scr=='trait'?'select':'home');
+function toast(m){const e=$('#ts');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),4500)}
+function banner(r){const t=TB[r.t],l=t.rb?'Rainbow':r.l;$('#bn').innerHTML=`<div class="t it ${l}">${bOf(r)}<span>${l} trait!</span></div><div class="s it">${esc(desc(r))}</div>`;$('#bn').classList.add('show');clearTimeout(bt);bt=setTimeout(()=>$('#bn').classList.remove('show'),5000)}
+function render(){document.body.classList.toggle('dim',scr!='home');const d=sel(),a=$('#app');
+if(scr=='home'){const tr=d&&d.trait;a.innerHTML=`<div class="home"><div class="mach"><div class="scr">${tr?bOf(tr):'<span class="q">?</span>'}</div></div><button class="or" data-a="scan"><kbd>E</kbd> Scan droid traits</button><div class="hud it">${coin}<div>${fc(S.d.reduce((s,x)=>s+x.spent,0))}<small>CREDITS SPENT · ${fmt(S.d.reduce((s,x)=>s+x.rolls,0))} rolls</small></div></div></div>`}
+else if(scr=='select'){a.innerHTML=`<h1 class="it">Select droid</h1><div class="cards">${S.d.map(x=>`<div class="card"><div class="port">${robot(x)}${x.trait?bOf(x.trait,{cls:'mini'}):''}</div><button class="rm" data-a="rm" data-i="${x.id}" aria-label="Remove ${esc(x.name)}">×</button><div class="nm it">${esc(x.name)}</div><div class="mt">${esc(x.v)}<span class="pill" style="background:${RC[x.rar]||'#25b4ff'}">${x.rar}</span>${x.locked&&x.trait?'🔒':''}</div><button class="or" data-a="pick" data-i="${x.id}">Select</button></div>`).join('')}<div class="card"><button class="add" data-a="add" aria-label="Add droid">+</button><div class="nm it" style="margin-top:8px">Add droid</div><button class="or" data-a="add" style="margin-top:34px;width:100%;min-width:0">Add</button></div></div><button class="gr" data-a="back"><kbd>ESC</kbd> Close</button>`}
+else if(scr=='trait'){if(!d)return go('select');const tr=d.trait,re=!!(tr||shown),s=shown||tr,p=price(d,d.rolls),t=s&&TB[s.t];
+a.innerHTML=`<div class="tw"><div class="panel"><div class="pin"><div class="port">${robot(d)}</div><h2 class="it"><small>${re?'Reroll':'Discover'}</small>Trait</h2>${s?`<div class="tn it">${esc(t.name)}</div><div class="te">${esc(desc(s))}</div>`:''}<div class="bw" id="bw">${s?bOf(s,{cls:shown?'pop':''}):badge('',null,{q:1})}</div></div></div><div class="side"><button class="or" data-a="roll">${p==null?'Roll':coin.replace('<svg','<svg width="26" height="26"')+fc(p,1)}</button><button class="or" data-a="guide">Trait guide</button><button class="gr" data-a="back"><kbd>ESC</kbd> Close</button>${re?`<button class="lock ${d.locked?'on':''}" data-a="lock">LOCK TRAIT<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/>${d.locked?'<path d="M8 11V8a4 4 0 0 1 8 0v3"/>':'<path d="M8 11V8a4 4 0 0 1 7.500-2"/>'}</svg></button>`:''}</div></div>${p==null&&!re?'<div style="font-weight:700;color:#ffe9a8;text-align:center">No price set for this droid. Use PRICES, or roll for free.</div>':''}`}
+else{const A=act(),pgs=[A.filter(t=>!t.rb),A.filter(t=>t.rb)];gp=(gp+pgs.length)%pgs.length;
+a.innerHTML=`<h1 class="it gh">Eligible traits for droid</h1><div class="gd">${pgs[gp].map(t=>`<div>${badge(t.id,null)}<b class="it">${esc(t.name)}</b><span>${esc(rng(t))}</span></div>`).join('')}</div><div class="pg"><kbd>Q</kbd><button data-a="gp" data-i="-1" aria-label="Previous page">◀</button><b class="it">${gp+1}/${pgs.length}</b><button data-a="gp" data-i="1" aria-label="Next page">▶</button><kbd>E</kbd></div><button class="gr" data-a="back"><kbd>ESC</kbd> Close</button>`}}
+function startRoll(){const d=sel();if(!d||rolling)return;if(d.locked&&d.trait)return toast('Trait is locked. Unlock it to reroll.');rolling=true;shown=null;const r=roll(),A=act(),t0=Date.now();let i=0;
+const step=()=>{const e=(Date.now()-t0)/1250;if(e>=1){rolling=false;apply(d,[r]);shown=r;banner(r);render();return}i++;const t=A[i%A.length];$('#bw').innerHTML=badge(t.id,t.rb?null:LV[i%4]);setTimeout(step,45+e*e*260)};step()}
+function dlg(html,ok,okText='Save'){const e=$('#dlg');e.innerHTML=`${html}<div class="row"><button class="gr" data-a="x">Cancel</button>${ok?`<button class="or" data-a="ok">${okText}</button>`:''}</div>`;e._ok=ok;e.showModal()}
+const sfx=id=>`<div class="sfx">${['K','M','B','T','Qa','Qi'].map(s=>`<button type="button" data-a="sfx" data-i="${id}:${s}">${s}</button>`).join('')}</div>`;
+const val=id=>$('#'+id).value;
+function addDroid(){pendImg='';dlg(`<h3 class="it">Add droid</h3><label>Droid (search or pick)<input id="an" placeholder="Search or pick a droid…" autocomplete="off"></label><div class="dd" id="dd" hidden></div><label>Rarity<select id="ar">${RAR.map(r=>`<option ${r=='Rare'?'selected':''}>${r}</option>`).join('')}</select></label><div id="nt" style="color:#8fe9ff;font-size:12px;min-height:1.2em"></div><label>Variant<select id="av">${S.set.vars.map(v=>`<option>${esc(v)}</option>`).join('')}</select></label><label>First roll price (optional)<input id="ap" placeholder="overrides the price chart, e.g. 7.8M"></label>${sfx('ap')}<label>Portrait (optional, from your device)<input id="aimg" type="file" accept="image/*"></label><div id="aprev" style="font-size:12px"></div>`,()=>{const e=ent(val('an')),n=e?e.n:val('an').trim();if(!n)return toast('Pick or type a droid name.'),0;if(val('ap').trim()&&pc(val('ap'))==null)return toast('Enter the price like 9.6M or 1.5B.'),0;const d={id:crypto.randomUUID(),name:n,rar:val('ar'),v:val('av'),fp:val('ap').trim(),img:pendImg,trait:null,locked:false,rolls:0,spent:0,hist:[]};S.d.unshift(d);S.sel=d.id;save();shown=null;scr='trait';render();return 1},'Add')}
+const ent=t=>{const k=nz(t);return k&&CAT.find(e=>k==nz(e.n)||k==nz(lab(e)))};
+function prices(){dlg(`<h3 class="it">Roll prices</h3><p style="margin:0 0 8px;font-size:13px">First-roll price per rarity and variant (7.2M, 1.5B, 3T, 2Qa). Empty = unknown, rolls count as free.</p><div style="overflow-x:auto"><div class="ptab" style="--n:${S.set.vars.length}"><span></span>${S.set.vars.map(v=>`<b>${esc(v)}</b>`).join('')}${RAR.map(r=>`<b style="color:${RC[r]}">${r}</b>${S.set.vars.map((v,i)=>`<input data-k="${r}|${v}" value="${esc(S.prices[r+'|'+v]||'')}" aria-label="${r} ${esc(v)}">`).join('')}`).join('')}</div></div><label>2nd roll price (% of first)<input id="rs" type="number" step="any" value="${+S.set.rs.toFixed(4)}"></label><label>Increase per reroll (%)<input id="rg" type="number" step="any" value="${S.set.rg}"></label>`,()=>{const n={};for(const i of $('#dlg').querySelectorAll('[data-k]')){const v=i.value.trim();if(v&&pc(v)==null)return toast(`${i.dataset.k}: "${v}" isn't a valid amount.`),0;if(v)n[i.dataset.k]=v}S.prices=n;S.set.rs=Math.max(0,+val('rs')||0);S.set.rg=Math.max(0,+val('rg')||0);save();render();return 1})}
+function settings(){const s=S.set;dlg(`<h3 class="it">Settings</h3><p style="margin:0;font-size:13px">The game doesn't show its odds, so these are adjustable guesses. Special traits share their chance equally; regular traits share the rest.</p><label>Special trait chance (%)<input id="srb" type="number" step=".5" value="${s.rb}"></label>${LV.map(l=>`<label>${l} level weight<input data-l="${l}" type="number" value="${s.lc[l]}"></label>`).join('')}<label>Variants (comma separated)<input id="sv" value="${esc(s.vars.join(', '))}"></label><label style="display:flex;gap:8px;align-items:center"><input id="sm" type="checkbox" style="width:auto" ${s.mis?'checked':''}> Include Mission Efficiency (not in the in-game guide)</label><button class="gr" data-a="reset" style="margin-top:8px">Reset all rolls (keeps droids)</button>`,()=>{s.rb=Math.min(100,Math.max(0,+val('srb')||0));for(const i of $('#dlg').querySelectorAll('[data-l]'))s.lc[i.dataset.l]=Math.max(0,+i.value||0);s.vars=val('sv').split(',').map(x=>x.trim()).filter(Boolean);if(!s.vars.length)s.vars=DEF.vars;s.mis=$('#sm').checked;save();render();return 1})}
+function until(){const d=sel();if(!d)return toast('Select a droid first.');if(d.locked&&d.trait)return toast('Trait is locked. Unlock it to reroll.');const A=act(),o=[...A.filter(t=>t.rb),...A.filter(t=>!t.rb)];
+dlg(`<h3 class="it">Roll until</h3><p style="margin:0;font-size:13px">Keeps rolling ${esc(d.name)} until it lands the trait you want (stops after 10,000 rolls).</p><label>Trait<select id="ut">${o.map(t=>`<option value="${t.id}">${esc(t.name)}${t.rb?'':` (+${t.min}/+${t.min*2}/+${t.min*3}/+${t.max}${t.unit})`}</option>`).join('')}</select></label><label>Minimum level<select id="ul">${LV.map(l=>`<option value="${l}">${l=='Default'?'Any level':l=='Rainbow'?'Rainbow only':l+' or better'}</option>`).join('')}</select></label><div id="ui" style="font-weight:700;color:#8fe9ff"></div>`,()=>{const t=TB[val('ut')],m=t.rb?'Default':val('ul'),rs=[];let hit;while(rs.length<1e4){const r=roll();rs.push(r);if(r.t==t.id&&(t.rb||LV.indexOf(r.l)>=LV.indexOf(m))){hit=r;break}}const c=first(d)!=null?`, costing ${fc(cost(d,d.rolls,rs.length))} credits`:'';apply(d,rs);shown=rs[rs.length-1];banner(shown);toast(hit?`Got ${t.name} after ${fmt(rs.length)} roll${rs.length>1?'s':''}${c}.`:`No ${t.name} in 10,000 rolls${c}. Try a lower level or change the odds in Settings.`);scr='trait';render();return 1},'Roll until');
+const info=()=>{const t=TB[val('ut')];$('#ul').disabled=t.rb;const a=expect(t,t.rb?'Default':val('ul'));$('#ui').textContent=isFinite(a)?`On average about ${fmt(Math.round(a))} rolls${first(d)!=null?` · ${fc(cost(d,d.rolls,Math.round(a)))} credits`:''} at your current odds.`:"This can't happen with your current odds."};$('#ut').onchange=$('#ul').onchange=info;info()}
+function stats(){const d=sel();dlg(`<h3 class="it">Stats</h3><b>All droids:</b> ${fmt(S.d.reduce((s,x)=>s+x.rolls,0))} rolls · ${fc(S.d.reduce((s,x)=>s+x.spent,0))} credits spent<p><b>Rainbow traits owned</b><br>${act().filter(t=>t.rb).map(t=>`${esc(t.name)}: ${esc(S.d.filter(x=>x.trait&&x.trait.t==t.id).map(x=>x.name).join(', ')||'—')}`).join('<br>')}</p><b>Roll history${d?` · ${esc(d.name)} (last 25)`:''}</b><ul class="h">${d?d.hist.map(h=>`<li>${TB[h.t].rb?'Rainbow':h.l} · ${esc(TB[h.t].name)}: ${esc(desc(h))}</li>`).join(''):''}</ul>`)}
+function ddRender(){const k=nz(val('an')),l=CAT.filter(e=>!k||nz(lab(e)).includes(k)),d=$('#dd');if(!d)return;d.hidden=!l.length;d.innerHTML=l.map(e=>`<button type="button" data-a="dd" data-i="${CAT.indexOf(e)}" style="color:${RC[e.r]}">${esc(e.n)} <small>· ${e.r}${e.note?' · Fusion':''}</small></button>`).join('')}
+let pendImg='';
+function pickImg(f){return new Promise(r=>{const i=new Image,u=URL.createObjectURL(f);i.onload=()=>{const c=document.createElement('canvas'),z=256;c.width=c.height=z;const s=Math.max(z/i.width,z/i.height),w=i.width*s,h=i.height*s;c.getContext('2d').drawImage(i,(z-w)/2,(z-h)/2,w,h);URL.revokeObjectURL(u);r(c.toDataURL('image/webp',.85))};i.onerror=()=>r('');i.src=u})}
+document.addEventListener('change',async e=>{if(e.target.id!='aimg'||!e.target.files[0])return;pendImg=await pickImg(e.target.files[0]);$('#aprev').innerHTML=pendImg?`<img src="${pendImg}" alt="" style="width:72px;height:72px;object-fit:cover;border:3px solid var(--cy);border-radius:6px">`:'Could not read that image.'});
+document.addEventListener('focusin',e=>{if(e.target.id=='an')ddRender()});
+document.addEventListener('input',e=>{if(e.target.id=='an'){ddRender();const m=ent(e.target.value);if(m)$('#ar').value=m.r;$('#nt').textContent=m?m.note:e.target.value.trim()?'Not in the list. Pick the rarity yourself.':''}});
+document.addEventListener('click',e=>{if(e.target.id=='an')ddRender();const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i,d=sel();
+if(a=='scan')go('select');else if(a=='pick'){S.sel=i;save();shown=null;go('trait')}else if(a=='back')back();else if(a=='add')addDroid();
+else if(a=='rm'){const x=S.d.find(z=>z.id==i);if(confirm(`Remove ${x.v} ${x.name} and its roll history?`)){S.d=S.d.filter(z=>z.id!=i);if(S.sel==i)S.sel='';save();render()}}
+else if(a=='roll')startRoll();else if(a=='guide'){gret=scr;gp=0;go('guide')}else if(a=='gp'){gp+=+i;render()}
+else if(a=='lock'&&d){d.locked=!d.locked;save();render()}
+else if(a=='prices')prices();else if(a=='settings')settings();else if(a=='until')until();else if(a=='stats')stats();
+else if(a=='dd'){const x=CAT[+i];$('#an').value=x.n;$('#ar').value=x.r;$('#nt').textContent=x.note;$('#dd').hidden=true}
+else if(a=='x')$('#dlg').close();else if(a=='ok'){if($('#dlg')._ok())$('#dlg').close()}
+else if(a=='sfx'){const[id,s]=i.split(':'),el=$('#'+id);el.value=(el.value.trim().replace(/\s*[a-z]+$/i,'')||'1')+s}
+else if(a=='reset'&&confirm("Clear every droid's trait, roll count, credits spent and history?")){S.d.forEach(x=>Object.assign(x,{trait:null,locked:false,rolls:0,spent:0,hist:[]}));shown=null;save();$('#dlg').close();render()}});
+document.addEventListener('keydown',e=>{if($('#dlg').open||/INPUT|SELECT/.test(e.target.tagName))return;const k=e.key.toLowerCase();
+if(k=='escape')back();else if(scr=='guide'&&(k=='q'||k=='arrowleft')){gp--;render()}else if(scr=='guide'&&(k=='e'||k=='arrowright')){gp++;render()}
+else if(scr=='home'&&(k=='e'||k=='enter'||k==' ')){e.preventDefault();go('select')}else if(scr=='trait'&&(k=='enter'||k==' ')){e.preventDefault();startRoll()}});
+render();
+</script></body></html>
